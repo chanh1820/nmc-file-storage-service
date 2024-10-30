@@ -2,6 +2,7 @@ package com.nmc.filestorageservice.dto.core;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.nmc.filestorageservice.constant.DBConstant;
+import com.nmc.filestorageservice.constant.MessageEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,20 +23,71 @@ public class BaseResponseDTO<D> {
     private String message;
 
     private D data;
-
-    public static <D> BaseResponseDTO<D> success() {
-        return new BaseResponseDTO<>(DBConstant.STATUS_SUCCESS, null, null, null);
+    public static <T> BaseResponseDTO<T> success() {
+        return new BaseResponseDTO<>(String.valueOf(HttpStatus.OK.value()), null, null, null);
     }
 
-    public static <D> BaseResponseDTO<D> success(D data) {
-        return new BaseResponseDTO<>(DBConstant.STATUS_SUCCESS, null, null, data);
+    public static <T> BaseResponseDTO<T> success(T data) {
+        return new BaseResponseDTO<>(String.valueOf(HttpStatus.OK.value()), null, null, data);
     }
 
-    public static <D> BaseResponseDTO<D> success(String messageCode, String message) {
-        return new BaseResponseDTO<>(DBConstant.STATUS_SUCCESS, messageCode, message, null);
+    public static <T> BaseResponseDTO<T> success(String messageCode, String message) {
+        return new BaseResponseDTO<>(String.valueOf(HttpStatus.OK.value()), messageCode, message, null);
     }
 
-//    public static <D> BaseResponseDTO<D> success(MessageEnum messageEnum) {
-//        return new BaseResponseDTO<>(HttpStatus.OK.value(), messageEnum.getMessageCode(), messageEnum.getMessage(), null);
-//    }
+    public static <T> BaseResponseDTO<T> success(MessageEnum messageEnum) {
+        return new BaseResponseDTO<>(String.valueOf(HttpStatus.OK.value()), messageEnum.getMessageCode(), messageEnum.getMessage(), null);
+    }
+
+    public static <T> BaseResponseDTO<T> badRequest(T data) {
+        return new BaseResponseDTO<>(String.valueOf(HttpStatus.BAD_REQUEST.value()), null, null, data);
+    }
+
+    public static <T> BaseResponseDTO<T> badRequest(String messageCode, String message) {
+        return new BaseResponseDTO<>(String.valueOf(HttpStatus.BAD_REQUEST.value()), messageCode, message, null);
+    }
+
+    public static <T> BaseResponseDTO<T> badRequest(String messageCode, String message, T data) {
+        return new BaseResponseDTO<>(String.valueOf(HttpStatus.BAD_REQUEST.value()), messageCode, message, data);
+    }
+
+    public static <T> BaseResponseDTO<T> badRequest(String message, T data) {
+        return new BaseResponseDTO<>(String.valueOf(HttpStatus.BAD_REQUEST.value()), null, message, data);
+    }
+
+    public static <T> BaseResponseDTO<T> badRequest(MessageEnum messageEnum) {
+        return new BaseResponseDTO<>(
+                String.valueOf(HttpStatus.BAD_REQUEST.value()),
+                messageEnum.getMessageCode(), messageEnum.getMessage(), null);
+    }
+
+    public static <T> BaseResponseDTO<T> fail(String message) {
+        return new BaseResponseDTO<>(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), null, message, null);
+    }
+
+    public static <T> BaseResponseDTO<T> fail(MessageEnum messageEnum) {
+        return new BaseResponseDTO<>(
+                String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()),
+                messageEnum.getMessageCode(), messageEnum.getMessage(), null);
+    }
+
+    public static <T> BaseResponseDTO<T> unAuthorized(String message) {
+        return new BaseResponseDTO<>(String.valueOf(HttpStatus.UNAUTHORIZED.value()), null, message, null);
+    }
+
+    public static <T> BaseResponseDTO<T> unAuthorized(MessageEnum messageEnum) {
+        return new BaseResponseDTO<>(
+                String.valueOf(HttpStatus.UNAUTHORIZED.value()),
+                messageEnum.getMessageCode(), messageEnum.getMessage(), null);
+    }
+
+    public static <T> BaseResponseDTO<T> accessDenied(String message) {
+        return new BaseResponseDTO<>(String.valueOf(HttpStatus.FORBIDDEN.value()), null, message, null);
+    }
+
+    public static <T> BaseResponseDTO<T> accessDenied(MessageEnum messageEnum) {
+        return new BaseResponseDTO<>(
+                String.valueOf(HttpStatus.FORBIDDEN.value()),
+                messageEnum.getMessageCode(), messageEnum.getMessage(), null);
+    }
 }

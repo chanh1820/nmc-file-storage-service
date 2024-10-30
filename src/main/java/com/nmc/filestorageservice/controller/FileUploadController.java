@@ -4,12 +4,13 @@ import com.nmc.filestorageservice.dto.core.BaseResponseDTO;
 import com.nmc.filestorageservice.service.FileService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/file")
@@ -20,19 +21,19 @@ public class FileUploadController {
     FileService fileService;
 
     @PostMapping("/single-file-upload")
-    BaseResponseDTO uploadSingleFile(@RequestParam("imageFile") MultipartFile imageFile,
+    BaseResponseDTO uploadSingleFile(@RequestParam("file") MultipartFile file,
                                      @RequestParam("userName") String userName) {
         log.info("Start uploadSingleFile with userName {}", userName);
-        String imageUrl = fileService.saveFile(imageFile, userName);
-        log.info("End uploadSingleFile with imageUrl {}", imageUrl);
-        return BaseResponseDTO.success(imageUrl);
+        String fileUrl = fileService.saveFile(file, userName);
+        log.info("End uploadSingleFile with fileUrl {}", fileUrl);
+        return BaseResponseDTO.success(fileUrl);
     }
     @PostMapping("/multi-file-upload")
-    BaseResponseDTO uploadMultiFile(@RequestParam("imageFile") MultipartFile imageFile,
-                                     @RequestParam("userName") String userName) {
+    BaseResponseDTO<List<String>> uploadMultiFile(@RequestParam("files") MultipartFile[] files,
+                                                  @RequestParam("userName") String userName) {
         log.info("Start uploadSingleFile with userName {}", userName);
-        String imageUrl = fileService.saveFile(imageFile, userName);
-        log.info("End uploadSingleFile with imageUrl {}", imageUrl);
-        return BaseResponseDTO.success(imageUrl);
+        List<String> filesSaved = fileService.saveMultiFile(files, userName);
+        log.info("End uploadSingleFile with imageUrl {}", filesSaved);
+        return BaseResponseDTO.success(filesSaved);
     }
 }
