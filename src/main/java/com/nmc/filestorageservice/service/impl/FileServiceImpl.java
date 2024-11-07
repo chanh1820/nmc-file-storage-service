@@ -13,6 +13,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -24,7 +25,7 @@ public class FileServiceImpl implements FileService {
     public String saveFile(MultipartFile file, String userName) {
         String fileName = "";
         try {
-            fileName = file.getOriginalFilename();
+            fileName = UUID.randomUUID().toString() + "-" + file.getOriginalFilename();
             Path filePath = Paths.get(getPathUploadFile(userName), fileName);
             Files.write(filePath, file.getBytes());
         } catch (Exception e) {
