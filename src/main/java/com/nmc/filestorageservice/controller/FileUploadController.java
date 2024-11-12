@@ -28,7 +28,7 @@ public class FileUploadController {
         log.info("End uploadSingleFile with fileUrl {}", fileUrl);
         return BaseResponseDTO.success(fileUrl);
     }
-    @PostMapping("/multi-file-upload")
+    @PostMapping(value = "/multi-file-upload", produces = "application/json")
     BaseResponseDTO<List<String>> uploadMultiFile(@RequestParam("files") MultipartFile[] files,
                                                   @RequestParam("userName") String userName) {
         log.info("Start uploadSingleFile with userName {}", userName);
